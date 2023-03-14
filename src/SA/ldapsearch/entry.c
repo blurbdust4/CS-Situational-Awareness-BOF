@@ -279,9 +279,10 @@ void customAttributes(PCHAR pAttribute, PCHAR pValue)
     else if(MSVCRT$strcmp(pAttribute, "cACertificate") == 0)
     {
 	char *encoded = NULL;
-	ULONG len = MSVCRT$strlen(pValue);
+	PBERVAL tmp = (PBERVAL)pValue;
+	ULONG len = tmp->bv_len;
 	encoded = (char *)MSVCRT$malloc((size_t)len*2);
-	Base64encode(encoded, pValue, len);
+	Base64encode(encoded, (char *)tmp->bv_val, len);
 	internal_printf("%s", encoded);
 	MSVCRT$free(encoded);
     }
