@@ -258,7 +258,7 @@ void customAttributes(PCHAR pAttribute, PCHAR pValue)
         internal_printf("%s", G);
         //RPCRT4$RpcStringFreeA(&G);       
         frpcstringfree(&G);
-    } else if (MSVCRT$strcmp(pAttribute, "nTSecurityDescriptor") == 0 || MSVCRT$strcmp(pAttribute, "msDS-AllowedToActOnBehalfOfOtherIdentity") == 0) {
+    } else if (MSVCRT$strcmp(pAttribute, "nTSecurityDescriptor") == 0 || MSVCRT$strcmp(pAttribute, "cACertificate") == 0 || MSVCRT$strcmp(pAttribute, "msDS-AllowedToActOnBehalfOfOtherIdentity") == 0) {
 		char *encoded = NULL;
 		PBERVAL tmp = (PBERVAL)pValue;
 		ULONG len = tmp->bv_len;
@@ -275,16 +275,6 @@ void customAttributes(PCHAR pAttribute, PCHAR pValue)
         ADVAPI32$ConvertSidToStringSidA((PSID)tmp->bv_val, &sid);
         internal_printf("%s", sid);
         KERNEL32$LocalFree(sid);
-    }
-    else if(MSVCRT$strcmp(pAttribute, "cACertificate") == 0)
-    {
-	char *encoded = NULL;
-	PBERVAL tmp = (PBERVAL)pValue;
-	ULONG len = tmp->bv_len;
-	encoded = (char *)MSVCRT$malloc((size_t)len*2);
-	Base64encode(encoded, (char *)tmp->bv_val, len);
-	internal_printf("%s", encoded);
-	MSVCRT$free(encoded);
     }
     else
     {
